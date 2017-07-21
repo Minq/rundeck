@@ -44,6 +44,7 @@ if [ ! -f "${initfile}" ]; then
       fi
    fi
    DATABASE_URL=${DATABASE_URL:-"jdbc:mysql://localhost/rundeckdb?autoReconnect=true"}
+   DATABASE_DRIVER=${DATABASE_DRIVER:-"com.mysql.jdbc.Driver"}
    RUNDECK_PASSWORD=${RUNDECK_PASSWORD:-$(pwgen -s 15 1)}
    DATABASE_ADMIN_PASSWORD=${DATABASE_ADMIN_PASSWORD:-${RUNDECK_PASSWORD}}
    DATABASE_ADMIN_USER=${DATABASE_ADMIN_USER:-rundeck}
@@ -123,6 +124,7 @@ if [ ! -f "${initfile}" ]; then
    sed -i 's,grails.serverURL\=.*,grails.serverURL\='${EXTERNAL_URL}',g' /etc/rundeck/rundeck-config.properties
    sed -i 's,dataSource.dbCreate.*,,g' /etc/rundeck/rundeck-config.properties
    sed -i 's,dataSource.url = .*,dataSource.url = '${DATABASE_URL}',g' /etc/rundeck/rundeck-config.properties
+   sed -i 's,dataSource.driverClassName = .*,dataSource.driverClassName = '${DATABASE_DRIVER}',g' /etc/rundeck/rundeck-config.properties
    if grep -q dataSource.username /etc/rundeck/rundeck-config.properties ; then
       :
    else
